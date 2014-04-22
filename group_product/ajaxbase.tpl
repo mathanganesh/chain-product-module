@@ -1,0 +1,1 @@
+<input type="hidden" value="{$ajaxbase}" id="ajaxbase" />

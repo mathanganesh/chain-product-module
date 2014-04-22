@@ -1,0 +1,103 @@
+added only this to product line.tpl
+
+{if isset($customizedDatas.$productId.$productAttributeId)}
+				{foreach $customizedDatas.$productId.$productAttributeId[$product.id_address_delivery] as $id_customization=>$customization}
+							{foreach $customization.datas as $type => $custom_data}
+								{if $type == $CUSTOMIZE_FILE}
+									<div class="customizationUploaded">
+										<ul class="customizationUploaded">
+											{foreach $custom_data as $picture}
+												<li><img src="{$pic_dir}{$picture.value}_small" alt="" class="customizationUploaded" /></li>
+											{/foreach}
+										</ul>
+									</div>
+								{elseif $type == $CUSTOMIZE_TEXTFIELD}
+									<ul class="typedText">
+										{foreach $custom_data as $textField}
+											<li>
+												{if $textField.name}
+													{$textField.name}
+												{else}
+													{l s='Text #'}{$textField@index+1}
+												{/if}
+												{l s=':'} {$textField.value}
+											</li>
+										{/foreach}
+									</ul>
+								{/if}
+							{/foreach}						
+					{/foreach}
+			{/if}
+
+			removed from shopping-cart.tpl file at nov 28 2013
+			
+			
+			{if isset($customizedDatas.$productId.$productAttributeId)}
+				{foreach $customizedDatas.$productId.$productAttributeId[$product.id_address_delivery] as $id_customization=>$customization}
+					<tr id="product_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}" class="product_customization_for_{$product.id_product}_{$product.id_product_attribute}_{$product.id_address_delivery|intval}{if $odd} odd{else} even{/if} customization alternate_item {if $product@last && $customization@last && !count($gift_products)}last_item{/if}">
+						<td class="cart_product">--</td>
+						<td>
+							{foreach $customization.datas as $type => $custom_data}
+								{if $type == $CUSTOMIZE_FILE}
+									<div class="customizationUploaded">
+										<ul class="customizationUploaded">
+											{foreach $custom_data as $picture}
+												<li><img src="{$pic_dir}{$picture.value}_small" alt="" class="customizationUploaded" /></li>
+											{/foreach}
+										</ul>
+									</div>
+								{elseif $type == $CUSTOMIZE_TEXTFIELD}
+									<ul class="typedText">
+										{foreach $custom_data as $textField}
+											<li>
+												{if $textField.name}
+													{$textField.name}
+												{else}
+													{l s='Text #'}{$textField@index+1}
+												{/if}
+												{l s=':'} {$textField.value}
+											</li>
+										{/foreach}
+										
+									</ul>
+								{/if}
+
+							{/foreach}
+						</td><td class="cart_ref">--</td><td class="cart_ref">--</td>
+						<td class="cart_quantity">
+                        <div class="cart_quantity_center">
+							{if isset($cannotModify) AND $cannotModify == 1}
+								<span style="float:left">{if $quantityDisplayed == 0 AND isset($customizedDatas.$productId.$productAttributeId)}{$customizedDatas.$productId.$productAttributeId|@count}{else}{$product.cart_quantity-$quantityDisplayed}{/if}</span>
+							{else}
+								<div id="cart_quantity_button" class="cart_quantity_button" style="float:left">
+								<a rel="nofollow" class="cart_quantity_up" id="cart_quantity_up_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}" href="{$link->getPageLink('cart', true, NULL, "add&amp;id_product={$product.id_product|intval}&amp;ipa={$product.id_product_attribute|intval}&amp;id_address_delivery={$product.id_address_delivery}&amp;id_customization={$id_customization}&amp;token={$token_cart}")}" title="{l s='Add'}"><img src="{$img_dir}icon/quantity_up.gif" alt="{l s='Add'}"/></a><br />
+								{if $product.minimal_quantity < ($customization.quantity -$quantityDisplayed) OR $product.minimal_quantity <= 1}
+								<a rel="nofollow" class="cart_quantity_down" id="cart_quantity_down_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}" href="{$link->getPageLink('cart', true, NULL, "add&amp;id_product={$product.id_product|intval}&amp;ipa={$product.id_product_attribute|intval}&amp;id_address_delivery={$product.id_address_delivery}&amp;id_customization={$id_customization}&amp;op=down&amp;token={$token_cart}")}" title="{l s='Subtract'}">
+									<img src="{$img_dir}icon/quantity_down.gif" alt="{l s='Subtract'}" />
+								</a>
+								{else}
+								<a class="cart_quantity_down" style="opacity: 0.3;" id="cart_quantity_down_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}" href="#" title="{l s='Subtract'}">
+									<img src="{$img_dir}icon/quantity_down.gif" alt="{l s='Subtract'}" width="14" height="9" />
+								</a>
+								{/if}
+								</div>
+								<input type="hidden" value="{$customization.quantity}" name="quantity_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}_hidden"/>
+								<input size="2" type="text" value="{$customization.quantity}" class="cart_quantity_input" name="quantity_{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}"/>
+							{/if}</div>
+						</td><td class="cart_ref">--</td>
+						<td class="cart_delete">
+							{if isset($cannotModify) AND $cannotModify == 1}
+							{else}
+								<div>
+									<a rel="nofollow" class="cart_quantity_delete" id="{$product.id_product}_{$product.id_product_attribute}_{$id_customization}_{$product.id_address_delivery|intval}" href="{$link->getPageLink('cart', true, NULL, "delete&amp;id_product={$product.id_product|intval}&amp;ipa={$product.id_product_attribute|intval}&amp;id_customization={$id_customization}&amp;id_address_delivery={$product.id_address_delivery}&amp;token={$token_cart}")}">{l s='Delete'}</a>
+								</div>
+							{/if}
+						</td>
+					</tr>
+					{assign var='quantityDisplayed' value=$quantityDisplayed+$customization.quantity}
+				{/foreach}
+				{* If it exists also some uncustomized products *}
+				{if $product.quantity-$quantityDisplayed > 0}{include file="./shopping-cart-product-line.tpl" productLast=$product@last productFirst=$product@first}{/if}
+			{/if}
+			
+			

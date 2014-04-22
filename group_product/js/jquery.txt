@@ -1,0 +1,24 @@
+$(".delete").click(function(event) {
+event.preventDefault();
+var href = $(this).attr("href");
+var server = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname;
+var a= href.split('index.php');
+var b=a[1];
+var final=server+b;
+var check=confirm("This will affect chain functionality,if this product was looped through chain.Are you sure to delete this?");
+if(check)
+{
+//$(location).attr('href',final);
+//window.location.href=final;
+}
+});
+
+onclick = $(this).attr('onclick');
+   $(this).attr('onclick','');
+   showConfirm(onclick);
+        return false;
+		
+		var original_onclick = $('.del').attr('onclick');
+$('.del').removeAttr('onclick').click(function(){
+    showConfirm(original_onclick);
+});
